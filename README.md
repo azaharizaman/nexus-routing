@@ -1,274 +1,281 @@
-# Nexus - Framework-Agnostic PHP Packages for ERP Systems
+# Nexus\Routing
 
-Nexus is a **package-only monorepo** containing 50+ atomic, reusable PHP packages for building Enterprise Resource Planning (ERP) systems. Each package is framework-agnostic, making them usable with Laravel, Symfony, Slim, or any other PHP framework.
+Route optimization and Vehicle Routing Problem (VRP) solver for the Nexus ERP system.
 
-## 📖 The Philosophy: "Pure Business Logic, Framework Independent"
+## Overview
 
-The core philosophy of Nexus is **Framework Agnosticism**. Business logic should be portable and reusable across different frameworks and applications.
+`Nexus\Routing` provides **framework-agnostic** algorithms for solving Traveling Salesman Problem (TSP) and Vehicle Routing Problem (VRP) with support for:
 
-- **🎯 Pure Business Logic**: Packages contain only business rules and domain logic
-- **🔌 Interface-Driven**: All external dependencies defined as contracts
-- **📦 Atomic & Publishable**: Each package can be published independently to Packagist
-- **🧪 Testable**: Pure PHP logic with mockable dependencies
-- **🌍 Framework-Agnostic**: Works with Laravel, Symfony, or any PHP framework
+- **TSP Optimization**: Nearest-Neighbor with 2-Opt refinement
+- **Multi-Vehicle VRP**: Google OR-Tools integration for complex constraints
+- **Offline Routing Cache**: Gzip-compressed route storage (50MB limit)
+- **Constraint Validation**: Time windows, vehicle capacity, service duration
+- **Route Metrics**: Total distance, duration, constraint violations
 
-## 🏗️ Architecture
+This package depends on `nexus/geo` for distance calculations and coordinates.
 
-### 📦 Atomic Packages
-
-All packages in `packages/` are self-contained units of functionality designed to be:
-
-- **Framework-Agnostic:** Pure PHP 8.3+ logic with no framework dependencies
-- **Persistence-Agnostic:** No migrations or models - data access defined via interfaces
-- **Publishable:** Each package can be published independently to Packagist
-- **Contract-Driven:** All external dependencies injected as interfaces
-- **Stateless:** Long-term state externalized via storage interfaces
-
-## 📦 Available Packages (51 packages)
-
-### Core Infrastructure (8 packages)
-- **`Nexus\Tenant`** - Multi-tenancy context and isolation engine
-- **`Nexus\Setting`** - Global and tenant-specific configuration management
-- **`Nexus\Sequencing`** - Auto-numbering with atomic counter management
-- **`Nexus\Period`** - Fiscal period management and transaction validation
-- **`Nexus\AuditLogger`** - Timeline feeds and audit trails
-- **`Nexus\EventStream`** - Event sourcing for critical domains (Finance GL, Inventory)
-- **`Nexus\Uom`** - Unit of measurement management and conversion
-- **`Nexus\Monitoring`** - Observability with telemetry, health checks, alerting, SLO tracking
-
-### Identity & Security (3 packages)
-- **`Nexus\Identity`** - Authentication, RBAC, MFA, session/token management
-- **`Nexus\Crypto`** - Cryptographic operations and key management
-- **`Nexus\Audit`** - Advanced audit capabilities (extends AuditLogger)
-
-### Finance & Accounting (7 packages)
-- **`Nexus\Finance`** - General ledger, journal entries, double-entry bookkeeping
-- **`Nexus\Accounting`** - Financial statements, period close, consolidation
-- **`Nexus\Receivable`** - Customer invoicing, collections, credit control
-- **`Nexus\Payable`** - Vendor bills, payment processing, 3-way matching
-- **`Nexus\CashManagement`** - Bank reconciliation, cash flow forecasting
-- **`Nexus\Budget`** - Budget planning and variance tracking
-- **`Nexus\Assets`** - Fixed asset management, depreciation
-- **`Nexus\Currency`** - Multi-currency management and exchange rates
-
-### Sales & Operations (6 packages)
-- **`Nexus\Sales`** - Quotation-to-order lifecycle, pricing engine
-- **`Nexus\Inventory`** - Stock management with lot/serial tracking
-- **`Nexus\Warehouse`** - Warehouse operations and bin management
-- **`Nexus\Procurement`** - Purchase requisitions, POs, goods receipt
-- **`Nexus\Manufacturing`** - Bill of materials, work orders, MRP
-- **`Nexus\Product`** - Product catalog, pricing, categorization
-
-### Human Resources (3 packages)
-- **`Nexus\Hrm`** - Leave, attendance, performance reviews
-- **`Nexus\Payroll`** - Payroll processing framework
-- **`Nexus\PayrollMysStatutory`** - Malaysian statutory calculations (EPF, SOCSO, PCB)
-
-### Customer & Partner Management (4 packages)
-- **`Nexus\Party`** - Customers, vendors, employees, contacts
-- **`Nexus\Crm`** - Leads, opportunities, sales pipeline
-- **`Nexus\Marketing`** - Campaigns, A/B testing, GDPR compliance
-- **`Nexus\FieldService`** - Work orders, technicians, service contracts
-
-### Integration & Automation (7 packages)
-- **`Nexus\Connector`** - Integration hub with circuit breaker, OAuth
-- **`Nexus\Workflow`** - Process automation, state machines
-- **`Nexus\Notifier`** - Multi-channel notifications (email, SMS, push, in-app)
-- **`Nexus\Scheduler`** - Task scheduling and job management
-- **`Nexus\DataProcessor`** - OCR, ETL interfaces (interface-only package)
-- **`Nexus\Intelligence`** - AI-assisted automation and predictions
-- **`Nexus\Geo`** - Geocoding, geofencing, routing
-- **`Nexus\Routing`** - Route optimization and caching
-
-### Reporting & Data (5 packages)
-- **`Nexus\Reporting`** - Report definition and execution engine
-- **`Nexus\Export`** - Multi-format export (PDF, Excel, CSV, JSON)
-- **`Nexus\Import`** - Data import with validation and transformation
-- **`Nexus\Analytics`** - Business intelligence, predictive models
-- **`Nexus\Document`** - Document management with versioning
-
-### Compliance & Governance (4 packages)
-- **`Nexus\Compliance`** - Process enforcement, operational compliance
-- **`Nexus\Statutory`** - Reporting compliance, statutory filing
-- **`Nexus\Backoffice`** - Company structure, offices, departments
-- **`Nexus\OrgStructure`** - Organizational hierarchy management
-
-### Support & Utilities (3 packages)
-- **`Nexus\Storage`** - File storage abstraction layer
-- **`Nexus\ProjectManagement`** - Projects, tasks, timesheets, milestones
-- **`Nexus\FeatureFlags`** - Feature flag management
-
-## 🛠️ Getting Started
-
-### Prerequisites
-- PHP 8.3+
-- Composer
-
-### Installation
-
-1. **Clone the repository:**
-   ```bash
-   git clone <repository-url> nexus
-   cd nexus
-   ```
-
-2. **Install Dependencies:**
-   ```bash
-   composer install
-   ```
-
-3. **Explore Packages:**
-   ```bash
-   # Browse available packages
-   ls packages/
-   
-   # Read package documentation
-   cat packages/Tenant/README.md
-   cat packages/Finance/README.md
-   ```
-
-## 📚 Usage
-
-### Installing a Package
-
-Each package can be installed independently in your PHP application:
+## Installation
 
 ```bash
-# In your Laravel, Symfony, or other PHP application
-composer require nexus/tenant
-composer require nexus/finance
-composer require nexus/receivable
+composer require nexus/routing:*@dev
 ```
 
-### Implementing Package Contracts
+## Features
 
-Packages define interfaces, your application provides implementations:
+### 1. TSP Optimization (Single Vehicle)
+
+Optimizes route for a single vehicle visiting multiple stops:
 
 ```php
-// Package defines the interface
-namespace Nexus\Tenant\Contracts;
+use Nexus\Routing\Services\TspOptimizer;
+use Nexus\Routing\ValueObjects\RouteStop;
+use Nexus\Geo\ValueObjects\Coordinates;
 
-interface TenantRepositoryInterface
-{
-    public function findById(string $id): ?TenantInterface;
-    public function save(TenantInterface $tenant): void;
-}
+$stops = [
+    new RouteStop('stop_1', new Coordinates(3.1390, 101.6869), null, null, 300), // 5 min service
+    new RouteStop('stop_2', new Coordinates(3.1478, 101.6953), null, null, 600),
+    new RouteStop('stop_3', new Coordinates(3.1570, 101.7123), null, null, 450),
+];
 
-// Your Laravel application implements it
-namespace App\Repositories;
+$result = $tspOptimizer->optimize($stops, $depotCoordinates);
 
-use Nexus\Tenant\Contracts\TenantRepositoryInterface;
-use Nexus\Tenant\Contracts\TenantInterface;
-use App\Models\Tenant;
+echo "Total Distance: " . $result->optimizedRoute->totalDistance->format('km');
+echo "Total Duration: " . gmdate('H:i:s', $result->optimizedRoute->totalDurationSeconds);
+echo "Optimized Sequence: " . implode(' -> ', $result->optimizedRoute->getStopIds());
+```
 
-final class EloquentTenantRepository implements TenantRepositoryInterface
-{
-    public function findById(string $id): ?TenantInterface
-    {
-        return Tenant::find($id);
-    }
-    
-    public function save(TenantInterface $tenant): void
-    {
-        Tenant::updateOrCreate(['id' => $tenant->getId()], [
-            'name' => $tenant->getName(),
-            'status' => $tenant->getStatus()->value,
-        ]);
-    }
-}
+**Output:**
+```
+Total Distance: 12.45 km
+Total Duration: 00:42:30
+Optimized Sequence: depot -> stop_2 -> stop_3 -> stop_1 -> depot
+```
 
-// Bind in service provider
-$this->app->bind(
-    TenantRepositoryInterface::class,
-    EloquentTenantRepository::class
+### 2. VRP Optimization (Multi-Vehicle)
+
+Assigns stops to multiple vehicles with capacity constraints:
+
+```php
+use Nexus\Routing\Services\VrpOptimizer;
+use Nexus\Routing\ValueObjects\VehicleProfile;
+use Nexus\Routing\ValueObjects\RouteConstraints;
+
+$vehicles = [
+    new VehicleProfile('truck_1', 1000, $depotCoordinates), // 1000 kg capacity
+    new VehicleProfile('truck_2', 800, $depotCoordinates),
+];
+
+$constraints = new RouteConstraints(
+    maxDurationSeconds: 28800, // 8 hours
+    maxCapacity: 1000
 );
+
+$result = $vrpOptimizer->optimize($stops, $vehicles, $constraints);
+
+foreach ($result->routes as $vehicleId => $route) {
+    echo "Vehicle {$vehicleId}: " . $route->totalDistance->format('km');
+}
 ```
 
-### Using Package Services
+### 3. Time Window Constraints
+
+Enforce delivery time windows:
 
 ```php
-use Nexus\Tenant\Contracts\TenantContextInterface;
-use Nexus\Finance\Contracts\GeneralLedgerManagerInterface;
+$stop = new RouteStop(
+    id: 'customer_123',
+    coordinates: new Coordinates(3.1390, 101.6869),
+    timeWindowStart: new \DateTimeImmutable('2025-01-15 09:00:00'),
+    timeWindowEnd: new \DateTimeImmutable('2025-01-15 12:00:00'),
+    serviceDurationSeconds: 600, // 10 minutes
+    demand: 50 // 50 kg
+);
 
-class InvoiceController
-{
-    public function __construct(
-        private readonly TenantContextInterface $tenantContext,
-        private readonly GeneralLedgerManagerInterface $glManager
-    ) {}
-    
-    public function store(Request $request)
-    {
-        $tenantId = $this->tenantContext->getCurrentTenantId();
-        
-        // Use package business logic
-        $this->glManager->postJournalEntry($journalEntry);
+$violations = $constraintValidator->validate($route, $constraints);
+
+if (!empty($violations)) {
+    foreach ($violations as $violation) {
+        echo "{$violation->type}: {$violation->description}";
     }
 }
 ```
 
-## 🏛️ Architectural Principles
+### 4. Offline Route Cache
 
-### 1. Framework Agnosticism
-- No Laravel, Symfony, or framework-specific code in packages
-- Use PSR interfaces (`psr/log`, `psr/http-client`, `psr/cache`)
-- All framework integration happens in consuming applications
+Store optimized routes for offline mobile app access:
 
-### 2. Contract-Driven Design
-- Packages define needs via interfaces
-- Consuming applications provide implementations
-- Dependency injection for all external dependencies
+```php
+use Nexus\Routing\Services\OfflineRouteCacheManager;
 
-### 3. Stateless Design
-- No session state in package classes
-- Long-term state externalized via storage interfaces
-- Horizontally scalable by design
+// Store route
+$cacheManager->store($routeId, $optimizedRoute, $tenantId);
 
-### 4. Modern PHP Standards
-- PHP 8.3+ with strict types
-- Constructor property promotion
-- Readonly properties for dependencies
-- Native enums for fixed value sets
-- Match expressions over switch statements
+// Retrieve for offline use
+$cachedRoute = $cacheManager->retrieve($routeId, $tenantId);
+
+// Get cache metrics
+$metrics = $cacheManager->getMetrics($tenantId);
+echo "Total cached routes: {$metrics->totalRoutes}";
+echo "Cache size: " . number_format($metrics->totalSizeBytes / 1024 / 1024, 2) . " MB";
+```
+
+**Cache Characteristics:**
+- **Compression**: Gzip compression (typically 80% reduction)
+- **Size Limit**: 50MB per tenant
+- **TTL**: 30 days (configurable)
+- **Versioning**: Cache key includes route parameters hash
+
+### 5. OR-Tools Integration
+
+For complex VRP scenarios, integrate with Google OR-Tools Docker service:
+
+```php
+// In Atomy adapter (apps/Atomy/app/Services/ORToolsAdapter.php)
+$result = $orToolsAdapter->solve($stops, $vehicles, $constraints);
+
+// OR-Tools provides:
+// - Advanced constraints (pickup/delivery pairs, vehicle breaks)
+// - Metaheuristics (Simulated Annealing, Tabu Search)
+// - Large-scale optimization (1000+ stops)
+```
+
+## Architecture
+
+### Package Structure
+
+```
+packages/Routing/
+├── src/
+│   ├── Contracts/
+│   │   ├── RouteOptimizerInterface.php
+│   │   ├── RouteCacheInterface.php
+│   │   └── ConstraintValidatorInterface.php
+│   ├── Services/
+│   │   ├── TspOptimizer.php           # Nearest-Neighbor + 2-Opt
+│   │   ├── VrpOptimizer.php           # Multi-vehicle assignment
+│   │   └── OfflineRouteCacheManager.php
+│   ├── ValueObjects/
+│   │   ├── RouteStop.php
+│   │   ├── OptimizedRoute.php
+│   │   ├── VehicleProfile.php
+│   │   ├── RouteConstraints.php
+│   │   ├── RouteOptimizationResult.php
+│   │   ├── ConstraintViolation.php
+│   │   └── OptimizationMetrics.php
+│   ├── Exceptions/
+│   │   ├── RouteOptimizationException.php
+│   │   ├── InvalidConstraintException.php
+│   │   └── NoFeasibleSolutionException.php
+│   └── ServiceProvider.php
+├── composer.json
+├── LICENSE
+└── README.md
+```
+
+### Algorithm Performance
+
+| Algorithm | Stops | Vehicles | Time Complexity | Execution Time |
+|-----------|-------|----------|-----------------|----------------|
+| **Nearest-Neighbor** | 50 | 1 | O(n²) | ~10ms |
+| **2-Opt Refinement** | 50 | 1 | O(n²) | ~50ms |
+| **VRP (Greedy)** | 100 | 5 | O(n² × v) | ~200ms |
+| **OR-Tools (Meta)** | 500 | 10 | Variable | 5-30s |
+
+### Cost Optimization Strategies
+
+1. **Cache Reusable Routes**: Store frequently-requested routes (e.g., daily delivery routes)
+2. **Batch Optimization**: Combine multiple route requests for OR-Tools
+3. **Tiered Approach**: Use TSP for <20 stops, VRP for 20-100, OR-Tools for >100
+4. **Offline Priority**: Deliver cache to mobile apps to reduce real-time API calls
+
+## Integration with Nexus\Geo
+
+This package tightly integrates with `Nexus\Geo`:
+
+```php
+use Nexus\Geo\Services\DistanceCalculator;
+use Nexus\Geo\Services\TravelTimeEstimator;
+use Nexus\Routing\Services\TspOptimizer;
+
+$distanceCalculator = new DistanceCalculator();
+$travelTimeEstimator = new TravelTimeEstimator($distanceCalculator);
+
+$tspOptimizer = new TspOptimizer($distanceCalculator, $travelTimeEstimator, $logger);
+```
+
+## Constraint Violation Logging
+
+All constraint violations are logged for analytics:
+
+```php
+// Violations are tracked in OptimizationMetrics
+$metrics = $result->metrics;
+
+foreach ($metrics->violations as $violation) {
+    // Log to Nexus\Analytics
+    $analyticsLogger->logConstraintViolation($violation);
+}
+
+// Query violations trend
+$trendData = $analyticsService->getViolationTrend($tenantId, $startDate, $endDate);
+```
+
+## Configuration
+
+Configuration is managed in `config/routing.php` (in Atomy):
+
+```php
+return [
+    'offline_cache' => [
+        'enabled' => true,
+        'max_size_mb' => 50,
+        'ttl_days' => 30,
+        'compression' => 'gzip',
+    ],
+    'or_tools' => [
+        'docker_host' => env('OR_TOOLS_HOST', 'localhost'),
+        'docker_port' => env('OR_TOOLS_PORT', 8080),
+        'timeout_seconds' => 60,
+    ],
+    'optimization' => [
+        'tsp_threshold' => 20,      // Use TSP for ≤20 stops
+        'vrp_threshold' => 100,     // Use VRP for ≤100 stops
+        'use_or_tools_above' => 100, // Use OR-Tools for >100 stops
+    ],
+];
+```
+
+## Testing
+
+```bash
+vendor/bin/phpunit packages/Routing/tests
+```
 
 ## 📖 Documentation
 
-- **[ARCHITECTURE.md](ARCHITECTURE.md)** - Architectural guidelines and rules
-- **[docs/NEXUS_PACKAGES_REFERENCE.md](docs/NEXUS_PACKAGES_REFERENCE.md)** - Complete package capabilities reference
-- **[.github/copilot-instructions.md](.github/copilot-instructions.md)** - Development guidelines
-- **Package READMEs** - Individual package documentation (e.g., `packages/Finance/README.md`)
+### Package Documentation
+- [Getting Started Guide](docs/getting-started.md)
+- [API Reference](docs/api-reference.md)
+- [Integration Guide](docs/integration-guide.md)
+- [Examples](docs/examples/)
 
-## 🤝 Contributing
+### Additional Resources
+- `IMPLEMENTATION_SUMMARY.md` - Implementation progress
+- `REQUIREMENTS.md` - Requirements
+- `TEST_SUITE_SUMMARY.md` - Tests
+- `VALUATION_MATRIX.md` - Valuation
 
-Please refer to [ARCHITECTURE.md](ARCHITECTURE.md) for detailed architectural guidelines.
 
-### Key Rules:
-1. **Packages must be framework-agnostic** - No Laravel, Symfony, or framework-specific code
-2. **Packages define persistence needs via Contracts** - No migrations or models in packages
-3. **All dependencies must be interfaces** - Use dependency injection
-4. **Modern PHP 8.3+ standards** - Use latest language features
-5. **Consult NEXUS_PACKAGES_REFERENCE.md** - Avoid reimplementing existing functionality
+## License
 
-### Creating a New Package
+MIT License. See [LICENSE](LICENSE) for details.
 
-1. Create `packages/NewPackage/` directory
-2. Run `composer init` (require `"php": "^8.3"`)
-3. Define PSR-4 autoloader: `"Nexus\\NewPackage\\": "src/"`
-4. Create `src/Contracts/`, `src/Services/`, `src/Exceptions/`
-5. Write comprehensive `README.md` with usage examples
-6. Add MIT `LICENSE` file
-7. Update root `composer.json` repositories array
+## Dependencies
 
-## 📄 License
+- `nexus/geo`: Geospatial calculations
+- `psr/log`: Logging interface
+- Google OR-Tools (optional, via Docker)
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## Contributing
 
-## 🔗 Links
-
-- **Package Reference Guide**: [docs/NEXUS_PACKAGES_REFERENCE.md](docs/NEXUS_PACKAGES_REFERENCE.md)
-- **Architecture Documentation**: [ARCHITECTURE.md](ARCHITECTURE.md)
-- **Implementation Summaries**: `docs/*_IMPLEMENTATION_SUMMARY.md`
-
----
-
-**Nexus** - Building the future of modular ERP systems with framework-agnostic PHP packages.
+This package follows the Nexus monorepo **Logic in Packages, Implementation in Applications** architecture. All business logic stays framework-agnostic.
